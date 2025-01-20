@@ -1,0 +1,55 @@
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTask } from '../features/tasks/taskSlice';
+import { useNavigate } from 'react-router-dom';
+
+export const TaskForm: React.FC = () => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [submissionDate, setSubmissionDate] = useState('');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newTask = {
+      id: Date.now().toString(),
+      title,
+      description,
+      submissionDate,
+    };
+    dispatch(addTask(newTask));
+    navigate('/tasks');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Title:</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Description:</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Submission Date:</label>
+        <input
+          type="date"
+          value={submissionDate}
+          onChange={(e) => setSubmissionDate(e.target.value)}
+        />
+      </div>
+      <button type="submit">Create Task</button>
+    </form> 
+
+  
+  );
+};
